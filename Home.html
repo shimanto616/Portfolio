@@ -1,0 +1,2584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MD Seeman Islam — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --red:#E8232A;
+    --red-dark:#B8161C;
+    --blue:#1B4FCC;
+    --blue-dark:#0E2E7A;
+    --yellow:#FFD23F;
+    --paper:#F5EFDF;
+    --ink:#1A1A1E;
+    --grey:#6B6B72;
+    --line: rgba(26,26,30,0.12);
+  }
+
+  /* ================= SYMBIOTE / VENOM DARK MODE ================= */
+  body.venom-mode {
+    --paper: #050608;
+    --ink: #FFFFFF;
+    --grey: #B7B0C9;
+    --blue: #08070C;
+    --blue-dark: #030304;
+    --yellow: #FFFFFF;
+    --red: #A855F7;
+    --line: rgba(168,85,247,0.28);
+    background: #030304;
+    color: #FFFFFF;
+  }
+
+  /* living, shifting symbiote glow across the whole page */
+  .symbiote-ooze{
+    position:fixed;
+    inset:0;
+    z-index:2;
+    pointer-events:none;
+    opacity:0;
+    mix-blend-mode:screen;
+    background:
+      radial-gradient(circle at 20% 25%, rgba(139,47,214,0.55), transparent 42%),
+      radial-gradient(circle at 82% 20%, rgba(107,255,122,0.16), transparent 40%),
+      radial-gradient(circle at 75% 75%, rgba(80,20,130,0.55), transparent 45%),
+      radial-gradient(circle at 15% 85%, rgba(139,47,214,0.35), transparent 40%);
+    background-size:180% 180%;
+    background-position:0% 0%;
+    animation: oozeShift 16s ease-in-out infinite;
+    transition:opacity 0.7s ease;
+  }
+  body.venom-mode .symbiote-ooze{ opacity:1; }
+  @keyframes oozeShift{
+    0%{ background-position: 0% 0%, 100% 0%, 100% 100%, 0% 100%; }
+    50%{ background-position: 40% 30%, 60% 20%, 70% 60%, 30% 80%; }
+    100%{ background-position: 0% 0%, 100% 0%, 100% 100%, 0% 100%; }
+  }
+  @media (prefers-reduced-motion: reduce){ .symbiote-ooze{ animation:none; } }
+
+  /* faint creeping tendril veins, only visible in venom mode */
+  .symbiote-tendril{
+    position:fixed;
+    z-index:1;
+    pointer-events:none;
+    opacity:0;
+    transition:opacity 0.8s ease;
+    filter:drop-shadow(0 0 10px rgba(139,47,214,0.5));
+  }
+  body.venom-mode .symbiote-tendril{ opacity:0.55; }
+  .tendril-left{ bottom:-40px; left:-40px; width:260px; height:420px; animation: tendrilSway 9s ease-in-out infinite; }
+  .tendril-right{ top:-40px; right:-40px; width:240px; height:380px; animation: tendrilSway 11s ease-in-out infinite reverse; }
+  @keyframes tendrilSway{
+    0%,100%{ transform:rotate(0deg) scale(1); }
+    50%{ transform:rotate(4deg) scale(1.04); }
+  }
+
+  /* dark card surfaces: gooey gradient + glossy sweep + glow-on-hover */
+  body.venom-mode #education,
+  body.venom-mode #tech,
+  body.venom-mode .pop-card,
+  body.venom-mode .tl-card,
+  body.venom-mode .panel,
+  body.venom-mode .project-card,
+  body.venom-mode .tech-card,
+  body.venom-mode .filter-btn,
+  body.venom-mode .gallery-card {
+    background: linear-gradient(160deg, #100C18 0%, #060509 100%);
+    color: #FFFFFF;
+    border: 2px solid rgba(168,85,247,0.4);
+    box-shadow: 0 6px 24px rgba(139,47,214,0.18);
+    position:relative;
+    overflow:hidden;
+  }
+  body.venom-mode .pop-card::before,
+  body.venom-mode .tl-card::before,
+  body.venom-mode .panel::before,
+  body.venom-mode .project-card::before,
+  body.venom-mode .tech-card::before,
+  body.venom-mode .gallery-card::before{
+    content:'';
+    position:absolute;
+    top:-60%; left:-70%;
+    width:45%; height:240%;
+    background:linear-gradient(120deg, transparent, rgba(168,85,247,0.35), transparent);
+    transform:rotate(22deg);
+    transition:left 0.7s ease;
+    pointer-events:none;
+    z-index:1;
+  }
+  body.venom-mode .pop-card:hover::before,
+  body.venom-mode .tl-card:hover::before,
+  body.venom-mode .panel:hover::before,
+  body.venom-mode .project-card:hover::before,
+  body.venom-mode .tech-card:hover::before,
+  body.venom-mode .gallery-card:hover::before{ left:130%; }
+
+  body.venom-mode .pop-card:hover,
+  body.venom-mode .tl-card:hover,
+  body.venom-mode .panel:hover,
+  body.venom-mode .project-card:hover,
+  body.venom-mode .tech-card:hover {
+    border-color: #A855F7;
+    box-shadow: 0 0 26px rgba(168,85,247,0.55), 0 0 55px rgba(107,255,122,0.15);
+    transform: translate(-3px, -3px);
+  }
+
+  body.venom-mode .tl-card h3,
+  body.venom-mode .pop-card h3,
+  body.venom-mode .panel h3,
+  body.venom-mode .card-title,
+  body.venom-mode .tech-card-header,
+  body.venom-mode .section-head h2,
+  body.venom-mode .contact-box h2 {
+    color: #FFFFFF !important;
+    animation: symbioteGlow 4s ease-in-out infinite;
+  }
+  @keyframes symbioteGlow{
+    0%,100%{ text-shadow:0 0 10px rgba(168,85,247,0.55), 0 0 26px rgba(168,85,247,0.25); }
+    50%{ text-shadow:0 0 14px rgba(107,255,122,0.5), 0 0 32px rgba(107,255,122,0.22); }
+  }
+
+  body.venom-mode .pop-card p,
+  body.venom-mode .card-desc,
+  body.venom-mode .degree,
+  body.venom-mode .institution,
+  body.venom-mode .panel p,
+  body.venom-mode .hero-desc,
+  body.venom-mode .contact-box p {
+    color: #C9C3DE !important;
+  }
+
+  body.venom-mode nav {
+    background: rgba(3,3,4,0.85);
+    border-bottom: 2px solid rgba(168,85,247,0.4);
+  }
+  body.venom-mode nav::after{
+    content:'';
+    position:absolute;
+    left:0; right:0; bottom:-2px;
+    height:2px;
+    background:linear-gradient(90deg,#8b2fd6,#FFFFFF,#8b2fd6);
+    background-size:220% 100%;
+    animation: navShimmer 7s linear infinite;
+  }
+  @keyframes navShimmer{ to{ background-position:-220% 0; } }
+
+  body.venom-mode .nav-mark {
+    color: #FFFFFF;
+  }
+
+  body.venom-mode .nav-links a {
+    color: #FFFFFF;
+  }
+
+  body.venom-mode .nav-links a:hover {
+    background: linear-gradient(120deg,#8b2fd6,#FFFFFF);
+    color: #050608 !important;
+    box-shadow: 0 0 14px rgba(168,85,247,0.7);
+  }
+
+  body.venom-mode .tag,
+  body.venom-mode .tech-pill,
+  body.venom-mode .grade-pill,
+  body.venom-mode .tl-badge,
+  body.venom-mode .tl-year-pill,
+  body.venom-mode .highlight-pill {
+    background: #14101E;
+    color: #FFFFFF !important;
+    border: 1.5px solid rgba(168,85,247,0.5);
+  }
+
+  body.venom-mode .pop-icon,
+  body.venom-mode .panel .badge,
+  body.venom-mode .hobby-emoji,
+  body.venom-mode .card-badge,
+  body.venom-mode .section-head .num {
+    background: linear-gradient(135deg,#8b2fd6,#4c1d78);
+    color: #FFFFFF !important;
+    border: 2px solid #050608;
+    box-shadow: 0 0 14px rgba(168,85,247,0.7);
+  }
+
+  body.venom-mode .hero-name {
+    color: #FFFFFF !important;
+    -webkit-text-stroke: 2px rgba(168,85,247,0.7);
+    text-shadow: 6px 6px 0 #0A0812, 0 0 30px rgba(168,85,247,0.5), 0 0 60px rgba(107,255,122,0.2);
+  }
+
+  body.venom-mode .hero-role {
+    color: #FFFFFF;
+    text-shadow: 0 0 12px rgba(107,255,122,0.6);
+  }
+
+  body.venom-mode .eyebrow-tag {
+    color: #A855F7;
+  }
+
+  body.venom-mode .btn-outline {
+    background: linear-gradient(135deg,#0c0a10,#050608);
+    color: #FFFFFF !important;
+    border-color: #FFFFFF;
+    box-shadow: 4px 4px 0 #000, 0 0 16px rgba(107,255,122,0.4);
+  }
+
+  body.venom-mode .btn-solid {
+    background: linear-gradient(135deg,#7b28c9,#2a0845);
+    color: #FFFFFF !important;
+    border: 2px solid #A855F7;
+    box-shadow: 4px 4px 0 #000, 0 0 20px rgba(168,85,247,0.5);
+  }
+
+  body.venom-mode .contact-btn{
+    background: #FFFFFF !important;
+    color: #050608 !important;
+    border-color:#A855F7;
+    box-shadow:4px 4px 0 #A855F7;
+  }
+  body.venom-mode .contact-btn:hover{
+    background:linear-gradient(120deg,#8b2fd6,#FFFFFF) !important;
+    color:#050608 !important;
+    border-color:#050608;
+    box-shadow:6px 6px 0 #050608, 0 0 20px rgba(168,85,247,0.6);
+  }
+
+  body.venom-mode .filter-btn {
+    background: linear-gradient(160deg, #100C18 0%, #060509 100%);
+    color: #FFFFFF;
+    border: 2px solid rgba(168,85,247,0.4);
+  }
+
+  body.venom-mode .filter-btn.active {
+    background: linear-gradient(120deg,#8b2fd6,#4c1d78);
+    color: #FFFFFF !important;
+    box-shadow:0 0 16px rgba(168,85,247,0.6);
+  }
+
+  body.venom-mode .margin-doodle {
+    background: linear-gradient(150deg,#14101E,#060509) !important;
+    color: #FFFFFF !important;
+    border-color: rgba(168,85,247,0.5) !important;
+    box-shadow: 4px 4px 0 #000, 0 0 14px rgba(168,85,247,0.4) !important;
+  }
+
+  body.venom-mode .portrait-hex{
+    background: linear-gradient(155deg, #1a0e2e 0%, #050608 55%, #143a1e 150%);
+    border-color: #A855F7;
+  }
+  body.venom-mode .portrait-ring{ border-color:#FFFFFF; }
+  body.venom-mode .portrait-blob{ background:#8b2fd6; opacity:0.6; }
+
+  /* recolor the red/yellow spider doodles + cursor + loader toward the symbiote palette */
+  body.venom-mode .doodle-spider svg,
+  body.venom-mode .dangler,
+  body.venom-mode #cursor-spider svg,
+  body.venom-mode .pow,
+  body.venom-mode #loader .thread,
+  body.venom-mode #loader .loader-spider,
+  body.venom-mode .progress-spider{
+    filter: hue-rotate(235deg) saturate(1.6) brightness(1.08);
+  }
+
+  body.venom-mode .wave-divider path {
+    fill: #030304;
+  }
+
+  body.venom-mode #education .wave-divider path,
+  body.venom-mode #tech .wave-divider path {
+    fill: #08070C;
+  }
+
+  body.venom-mode #hobby .wave-divider path {
+    fill: #030304;
+  }
+
+  body.venom-mode #contact {
+    background: radial-gradient(circle at 50% 20%, #150a24 0%, #020304 70%);
+  }
+
+  body.venom-mode #loader{
+    background: radial-gradient(circle at 50% 30%, #1a0e2e 0%, #030304 75%);
+  }
+  body.venom-mode #loader .loader-progress{
+    border-color:#A855F7;
+    background:rgba(139,47,214,0.15);
+  }
+  body.venom-mode #loader .loader-progress-fill{
+    background:linear-gradient(90deg,#8b2fd6,#FFFFFF);
+  }
+  body.venom-mode #loader h2{
+    -webkit-text-stroke: 1.5px rgba(168,85,247,0.7);
+    text-shadow:3px 3px 0 #000, 0 0 22px rgba(168,85,247,0.6);
+  }
+
+  /* remove the leftover green (--yellow) from these two buttons specifically */
+  body.venom-mode .expand-bar{
+    background: linear-gradient(135deg,#7b28c9,#2a0845);
+    color:#FFFFFF;
+    border-color:#A855F7;
+    box-shadow: 6px 6px 0 #000, 0 0 20px rgba(168,85,247,0.45);
+  }
+  body.venom-mode .expand-bar:hover{
+    background: linear-gradient(135deg,#9333ea,#3b0764);
+    box-shadow: 8px 8px 0 #000, 0 0 30px rgba(168,85,247,0.65);
+  }
+  body.venom-mode .explore-btn{
+    background: linear-gradient(135deg,#7b28c9,#2a0845);
+    color:#FFFFFF;
+    border-color:#A855F7;
+    box-shadow: 4px 4px 0 #000, 0 0 16px rgba(168,85,247,0.45);
+  }
+  body.venom-mode .explore-btn:hover{
+    background: linear-gradient(135deg,#9333ea,#3b0764);
+    box-shadow: 6px 6px 0 #000, 0 0 24px rgba(168,85,247,0.65);
+  }
+
+  /* hobby cards: more pop in venom mode */
+  body.venom-mode .hobby-feature-card{
+    background: linear-gradient(160deg, #150C22 0%, #060509 100%);
+    border: 3px solid rgba(168,85,247,0.55);
+    box-shadow: 10px 10px 0 #000, 0 0 34px rgba(168,85,247,0.3);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+  body.venom-mode .hobby-feature-card:hover{
+    transform: translate(-5px,-5px);
+    border-color:#A855F7;
+    box-shadow: 14px 14px 0 #000, 0 0 46px rgba(168,85,247,0.5), 0 0 70px rgba(107,255,122,0.15);
+  }
+
+  /* more dynamic, moving textures per section in venom mode */
+  body.venom-mode .halftone{
+    background-image: radial-gradient(#A855F7 1.6px, transparent 1.6px);
+    background-size: 18px 18px;
+    opacity:0.1;
+    animation: texturePulse 7s ease-in-out infinite;
+  }
+  body.venom-mode .halftone-light{
+    background-image: radial-gradient(#FFFFFF 1.6px, transparent 1.6px);
+    background-size: 18px 18px;
+    opacity:0.1;
+    animation: texturePulse 9s ease-in-out infinite reverse;
+  }
+  body.venom-mode .texture-grid{
+    background-image: linear-gradient(to right, rgba(168,85,247,0.1) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(168,85,247,0.1) 1px, transparent 1px);
+    background-size: 34px 34px;
+    animation: gridDrift 14s linear infinite;
+  }
+  @keyframes texturePulse{
+    0%,100%{ opacity:0.05; }
+    50%{ opacity:0.18; }
+  }
+  @keyframes gridDrift{
+    to{ background-position: 34px 34px, 34px 34px; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    body.venom-mode .halftone, body.venom-mode .halftone-light, body.venom-mode .texture-grid{ animation:none; }
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
+  ::selection{ background:var(--yellow); color:var(--ink); }
+
+  h1,h2,h3, .display{
+    font-family:'Anton', sans-serif;
+    font-weight:400;
+    letter-spacing:0.5px;
+    line-height:0.95;
+  }
+  a{ color:inherit; text-decoration:none; }
+  .wrap{ max-width:1380px; margin:0 auto; padding:0 32px; }
+
+  /* Background Halftone & Texture Overlays */
+  .halftone{
+    position:absolute;
+    inset:0;
+    background-image: radial-gradient(var(--ink) 1.5px, transparent 1.5px);
+    background-size: 16px 16px;
+    opacity:0.055;
+    pointer-events:none;
+  }
+  .halftone-light{
+    position:absolute;
+    inset:0;
+    background-image: radial-gradient(var(--paper) 1.5px, transparent 1.5px);
+    background-size: 16px 16px;
+    opacity:0.08;
+    pointer-events:none;
+  }
+  .texture-grid{
+    position:absolute;
+    inset:0;
+    background-image: linear-gradient(to right, rgba(26,26,30,0.03) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(26,26,30,0.03) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events:none;
+  }
+
+  /* ================= NAV ================= */
+  nav{
+    position:fixed;
+    top:0; left:0; right:0;
+    z-index:50;
+    background:rgba(245,239,223,0.95);
+    backdrop-filter:blur(8px);
+    border-bottom:3px solid var(--ink);
+    transition: background 0.4s ease, border-color 0.4s ease;
+  }
+  nav .wrap{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    height:68px;
+    position:relative;
+  }
+  .nav-mark{
+    font-family:'Anton', sans-serif;
+    font-size:1.2rem;
+    letter-spacing:1px;
+  }
+  .nav-mark span{ color:var(--red); }
+  
+  .nav-right-wrap{
+    display:flex;
+    align-items:center;
+    gap:16px;
+  }
+  .nav-links{ display:flex; gap:8px; }
+  .nav-links a{
+    font-size:0.88rem;
+    font-weight:700;
+    color:var(--ink);
+    padding:8px 14px;
+    border-radius:20px;
+    transition:background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+  }
+  .nav-links a:hover{
+    background:var(--red);
+    color:var(--paper);
+    transform:translateY(-1px);
+  }
+
+  /* Venom Theme Toggle Button */
+  .theme-toggle-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--paper);
+    border: 2.5px solid var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 2.5px 2.5px 0 var(--red);
+    transition: transform 0.2s ease, background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    flex-shrink: 0;
+  }
+  .theme-toggle-btn:hover {
+    transform: scale(1.08) rotate(12deg);
+  }
+  .theme-toggle-btn svg {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  body.venom-mode .theme-toggle-btn {
+    background: #FFFFFF;
+    color: #050608;
+    border-color: #FFFFFF;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 2.5px 2.5px 0 #E8232A;
+  }
+
+  /* Mobile Hamburger Toggle */
+  .nav-toggle{
+    display:none;
+    background:var(--yellow);
+    border:2.5px solid var(--ink);
+    border-radius:10px;
+    padding:8px 12px;
+    font-family:'Anton', sans-serif;
+    font-size:1rem;
+    cursor:pointer;
+    box-shadow:2px 2px 0 var(--ink);
+  }
+
+  /* ================= HERO ================= */
+  header.hero{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    padding-top:78px;
+    padding-bottom:100px;
+    background:var(--blue);
+    overflow:hidden;
+    transition: background-color 0.4s ease;
+  }
+  .wave-divider{
+    position:absolute;
+    left:0; right:0; bottom:-1px;
+    width:100%;
+    height:90px;
+    z-index:3;
+    line-height:0;
+  }
+  .wave-divider svg{ width:100%; height:100%; display:block; }
+  .web-lines{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    z-index:1;
+  }
+
+  /* -------- Doodles & Side Fillers -------- */
+  .margin-doodle{
+    position:absolute;
+    font-family:'Anton', sans-serif;
+    text-transform:uppercase;
+    border:3px solid var(--ink);
+    box-shadow:4px 4px 0 var(--ink);
+    z-index:4;
+    pointer-events:none;
+    user-select:none;
+  }
+  .doodle-left-pow{
+    top:18%; left:2.5%;
+    background:var(--yellow);
+    color:var(--ink);
+    font-size:1.2rem;
+    padding:8px 18px;
+    border-radius:30px;
+    transform:rotate(-12deg);
+    animation: floatDoodle 4s ease-in-out infinite alternate;
+  }
+  .doodle-left-boom{
+    top:42%; left:2%;
+    background:var(--red);
+    color:var(--paper);
+    font-size:1.1rem;
+    padding:6px 16px;
+    border-radius:8px;
+    transform:rotate(14deg);
+    animation: floatDoodle 3.5s ease-in-out infinite alternate-reverse;
+  }
+  .doodle-right-badge{
+    top:16%; right:3.5%;
+    background:var(--paper);
+    color:var(--red);
+    font-size:1rem;
+    padding:10px 16px;
+    border-radius:12px;
+    transform:rotate(8deg);
+    animation: floatDoodle 5s ease-in-out infinite alternate-reverse;
+  }
+  .doodle-right-zip{
+    top:48%; right:2.5%;
+    background:var(--yellow);
+    color:var(--ink);
+    font-size:1.1rem;
+    padding:8px 18px;
+    border-radius:50px;
+    transform:rotate(-10deg);
+  }
+  .doodle-bottom-left{
+    bottom:14%; left:3%;
+    background:var(--paper);
+    color:var(--blue-dark);
+    font-size:1rem;
+    padding:8px 20px;
+    border-radius:999px;
+    transform:rotate(6deg);
+  }
+  .doodle-bottom-right{
+    bottom:15%; right:3%;
+    background:var(--red);
+    color:var(--paper);
+    font-size:1.1rem;
+    padding:8px 18px;
+    border-radius:10px;
+    transform:rotate(-5deg);
+  }
+
+  @keyframes floatDoodle{
+    0%{ transform:translateY(0) rotate(-12deg); }
+    100%{ transform:translateY(-12px) rotate(-8deg); }
+  }
+
+  .doodle-spider{
+    position:absolute;
+    width:34px; height:34px;
+    z-index:4;
+    pointer-events:none;
+    opacity:0.85;
+  }
+  .doodle-spider svg{ width:100%; height:100%; }
+  .crawl-a{ animation: crawlA 9s ease-in-out infinite; }
+  .crawl-b{ animation: crawlB 11s ease-in-out infinite; }
+  .crawl-c{ animation: crawlC 7.5s ease-in-out infinite; }
+  @keyframes crawlA{
+    0%{ transform:translate(0,0) rotate(0deg); }
+    25%{ transform:translate(60px,-14px) rotate(8deg); }
+    50%{ transform:translate(110px,10px) rotate(-6deg); }
+    75%{ transform:translate(50px,26px) rotate(4deg); }
+    100%{ transform:translate(0,0) rotate(0deg); }
+  }
+  @keyframes crawlB{
+    0%{ transform:translate(0,0) rotate(0deg); }
+    30%{ transform:translate(-70px,18px) rotate(-10deg); }
+    60%{ transform:translate(-30px,-20px) rotate(6deg); }
+    100%{ transform:translate(0,0) rotate(0deg); }
+  }
+  @keyframes crawlC{
+    0%{ transform:translate(0,0) rotate(0deg) scale(1); }
+    20%{ transform:translate(40px,-30px) rotate(15deg) scale(1.1); }
+    45%{ transform:translate(90px,10px) rotate(-8deg) scale(0.95); }
+    70%{ transform:translate(30px,45px) rotate(10deg) scale(1.05); }
+    100%{ transform:translate(0,0) rotate(0deg) scale(1); }
+  }
+  .dangler{
+    position:absolute;
+    top:0; right:12%;
+    width:2px;
+    height:140px;
+    background:rgba(245,239,223,0.55);
+    transform-origin:top center;
+    animation: swing 4.5s ease-in-out infinite;
+    z-index:4;
+  }
+  .dangler .doodle-spider{
+    position:absolute;
+    top:100%; left:50%;
+    transform:translateX(-50%);
+    width:30px; height:30px;
+  }
+  @keyframes swing{
+    0%,100%{ transform:rotate(-9deg); }
+    50%{ transform:rotate(9deg); }
+  }
+
+  .web-lines path, .web-lines line{
+    stroke-dasharray: 6 6;
+    animation: webShimmer 12s linear infinite;
+  }
+  @keyframes webShimmer{
+    to{ stroke-dashoffset:-120; }
+  }
+
+  /* -------- Custom Cursor -------- */
+  body{ cursor:none; }
+  a, button, .btn, .portrait-hex, .filter-btn, .project-card, .pop-card, .tl-card, .tech-card, .gallery-card, .explore-btn, .nav-toggle, .theme-toggle-btn{ cursor:none; }
+  #cursor-spider{
+    position:fixed;
+    top:0; left:0;
+    width:36px; height:36px;
+    pointer-events:none;
+    z-index:9999;
+    transform:translate(-50%,-50%);
+    filter:drop-shadow(0 0 2px rgba(0,0,0,0.5));
+    transition: width 0.15s ease, height 0.15s ease, opacity 0.15s ease;
+  }
+  #cursor-spider.hovering{ width:48px; height:48px; }
+  #cursor-spider .legs{ animation: legWiggle 0.6s ease-in-out infinite; transform-origin:16px 16px; }
+  @keyframes legWiggle{
+    0%,100%{ transform:scale(1) rotate(0deg); }
+    50%{ transform:scale(1.08) rotate(4deg); }
+  }
+  .web-shot{
+    position:fixed;
+    top:0; left:0;
+    width:2px;
+    background: linear-gradient(var(--paper), transparent);
+    transform-origin: 0 0;
+    pointer-events:none;
+    z-index:9998;
+    animation: shotFade 0.55s ease-out forwards;
+  }
+  @keyframes shotFade{
+    0%{ opacity:1; }
+    100%{ opacity:0; }
+  }
+  @media (pointer:coarse){
+    body, a, button, .btn, .nav-toggle, .theme-toggle-btn{ cursor:auto; }
+    #cursor-spider{ display:none; }
+  }
+
+  /* -------- Loading Screen -------- */
+  #loader{
+    position:fixed;
+    inset:0;
+    z-index:99999;
+    background:var(--blue);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:26px;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+  }
+  #loader.hide{ opacity:0; visibility:hidden; pointer-events:none; }
+  #loader .thread-wrap{
+    position:relative;
+    width:60px;
+    height:130px;
+    display:flex;
+    justify-content:center;
+    z-index:2;
+  }
+  #loader .thread{
+    width:2px;
+    height:100%;
+    background:rgba(245,239,223,0.6);
+    transform-origin:top center;
+    animation: loaderSwing 3.2s ease-in-out infinite;
+  }
+  #loader .loader-spider{
+    position:absolute;
+    top:100%;
+    left:50%;
+    width:40px; height:40px;
+    transform:translate(-50%,-4px);
+  }
+  @keyframes loaderSwing{
+    0%,100%{ transform:rotate(-14deg); }
+    50%{ transform:rotate(14deg); }
+  }
+  #loader h2{
+    position:relative;
+    z-index:1;
+    color:var(--paper);
+    font-size:clamp(1.6rem, 5vw, 2.5rem);
+    text-transform:uppercase;
+    text-align:center;
+    -webkit-text-stroke: 1.5px var(--ink);
+    text-shadow: 3px 3px 0 var(--red);
+    padding:0 20px;
+    margin-top:14px;
+    animation: loaderTextFade 3.2s ease-in-out infinite;
+  }
+  @keyframes loaderTextFade{
+    0%,100%{ opacity:0.6; }
+    50%{ opacity:1; }
+  }
+  #loader .loader-progress-container{
+    width:min(320px, 80vw);
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  #loader .loader-progress{
+    width:100%;
+    height:12px;
+    border:2.5px solid var(--ink);
+    border-radius:999px;
+    background:rgba(245,239,223,0.25);
+    position:relative;
+    z-index:1;
+  }
+  #loader .loader-progress-fill{
+    height:100%;
+    width:0%;
+    background:var(--red);
+    border-radius:999px;
+    transition:width 0.1s linear;
+  }
+  #loader .progress-spider{
+    position:absolute;
+    top:-11px;
+    left:0%;
+    width:34px;
+    height:34px;
+    transform:translateX(-50%) rotate(90deg);
+    z-index:3;
+    pointer-events:none;
+    transition:left 0.1s linear;
+  }
+  #loader .loader-pct{
+    color:var(--paper);
+    font-weight:800;
+    font-size:0.9rem;
+    letter-spacing:1px;
+    z-index:1;
+    position:relative;
+    margin-top:10px;
+  }
+
+  /* Hero Section */
+  .hero-grid{
+    position:relative;
+    z-index:2;
+    width:100%;
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    align-items:center;
+    gap:50px;
+    padding:40px 0;
+  }
+  .eyebrow-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    font-size:1rem;
+    font-weight:800;
+    color:var(--yellow);
+    margin-bottom:20px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+  }
+  .hero-name{
+    font-size:clamp(3.8rem, 8.5vw, 6.8rem);
+    color:var(--paper);
+    text-transform:uppercase;
+    -webkit-text-stroke: 2.5px var(--ink);
+    text-shadow: 6px 6px 0 var(--red);
+    line-height:0.9;
+  }
+  .hero-role{
+    margin-top:24px;
+    font-size:clamp(1.2rem, 2.5vw, 1.6rem);
+    color:var(--yellow);
+    font-weight:800;
+    max-width:600px;
+  }
+  .hero-desc{
+    margin-top:18px;
+    max-width:580px;
+    color:var(--paper);
+    opacity:0.95;
+    font-size:1.15rem;
+    line-height:1.6;
+  }
+  .hero-cta{
+    margin-top:36px;
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-block;
+    padding:16px 36px;
+    font-weight:800;
+    font-size:1rem;
+    border-radius:999px;
+    border:3px solid var(--ink);
+    transition:transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow:4px 4px 0 var(--ink);
+  }
+  .btn:hover{ transform:translate(-2px,-2px); box-shadow:6px 6px 0 var(--ink); }
+  .btn:active{ transform:translate(1px,1px); box-shadow:2px 2px 0 var(--ink); }
+  .btn-solid{ background:var(--red); color:var(--paper); }
+  .btn-outline{ background:var(--yellow); color:var(--ink); }
+
+  .portrait-frame{
+    position:relative;
+    justify-self:center;
+    width:min(520px, 90vw);
+    aspect-ratio:1/1.12;
+  }
+  .portrait-blob{
+    position:absolute;
+    inset:-38px;
+    background:var(--yellow);
+    z-index:-2;
+    border-radius:62% 38% 55% 45% / 45% 55% 45% 55%;
+    animation: blobMorph 9s ease-in-out infinite;
+    opacity:0.9;
+  }
+  @keyframes blobMorph{
+    0%,100%{ border-radius:62% 38% 55% 45% / 45% 55% 45% 55%; }
+    50%{ border-radius:45% 55% 40% 60% / 55% 40% 60% 40%; }
+  }
+  .portrait-hex{
+    width:100%;
+    height:100%;
+    clip-path:polygon(50% 0%, 100% 26%, 100% 76%, 50% 100%, 0% 76%, 0% 26%);
+    background:linear-gradient(155deg, var(--red) 0%, var(--red-dark) 60%, var(--yellow) 150%);
+    position:relative;
+    overflow:hidden;
+    border:4px solid var(--ink);
+    touch-action: manipulation;
+  }
+  
+  .spidey-cover{
+    position:absolute;
+    inset:0;
+    z-index:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--red-dark);
+  }
+  .spidey-cover img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    transition: opacity 0.3s ease;
+  }
+
+  .photo-reveal-layer{
+    position:absolute;
+    inset:0;
+    z-index:2;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--paper);
+    clip-path: circle(0px at var(--mouse-x, 50%) var(--mouse-y, 50%));
+    transition: clip-path 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+    pointer-events:none;
+  }
+  
+  /* Hover and Tap Active Reveal State */
+  .portrait-hex:hover .photo-reveal-layer,
+  .portrait-hex.mobile-revealed .photo-reveal-layer {
+    clip-path: circle(340px at var(--mouse-x, 50%) var(--mouse-y, 50%));
+  }
+
+  .portrait-ring{
+    position:absolute;
+    inset:-18px;
+    clip-path:polygon(50% 0%, 100% 26%, 100% 76%, 50% 100%, 0% 76%, 0% 26%);
+    border:3px dashed var(--yellow);
+    z-index:-1;
+  }
+  .pow{
+    position:absolute;
+    top:-32px; right:-26px;
+    background:var(--yellow);
+    color:var(--ink);
+    font-family:'Anton', sans-serif;
+    font-size:1.35rem;
+    padding:10px 6px;
+    border-radius:50%;
+    width:92px; height:92px;
+    display:flex; align-items:center; justify-content:center;
+    text-align:center;
+    border:3.5px solid var(--ink);
+    transform:rotate(12deg);
+    box-shadow:4px 4px 0 var(--ink);
+    z-index:5;
+  }
+
+  /* ================= SECTION SHELL ================= */
+  section{ position:relative; padding:130px 0; transition: background 0.4s ease; }
+  .section-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:60px;
+    flex-wrap:wrap;
+    gap:20px;
+  }
+  .section-head-title-wrap{
+    display:flex;
+    align-items:center;
+    gap:18px;
+  }
+  .section-head h2{
+    font-size:clamp(2.4rem, 4.5vw, 3.4rem);
+    text-transform:uppercase;
+  }
+  .section-head .num{
+    font-family:'Anton', sans-serif;
+    color:var(--red);
+    font-size:1.2rem;
+    background:var(--yellow);
+    padding:5px 16px;
+    border-radius:20px;
+    border:2.5px solid var(--ink);
+  }
+
+  #education{ background:#fff; }
+  #expertise{ background:var(--blue); color:var(--paper); }
+  #expertise .section-head .num{ color:var(--blue); }
+  #work{ background:var(--paper); }
+  #tech{ background:#fff; }
+  #hobby{ background:var(--blue); color:var(--paper); }
+  #hobby .section-head .num{ color:var(--blue); }
+
+  /* ================= DYNAMIC ABOUT ================= */
+  .about-cards-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:32px;
+  }
+  .pop-card{
+    background:#fff;
+    border:3.5px solid var(--ink);
+    border-radius:24px;
+    padding:38px;
+    box-shadow:8px 8px 0 var(--ink);
+    position:relative;
+    transition:transform 0.25s ease, box-shadow 0.25s ease, background 0.4s ease, border-color 0.4s ease;
+  }
+  .pop-card:hover{
+    transform:translate(-4px,-4px);
+    box-shadow:12px 12px 0 var(--red);
+  }
+  .pop-card-header{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin-bottom:18px;
+  }
+  .pop-icon{
+    font-size:2rem;
+    background:var(--yellow);
+    border:3px solid var(--ink);
+    width:56px; height:56px;
+    border-radius:14px;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:3px 3px 0 var(--ink);
+  }
+  .pop-card h3{
+    font-size:1.5rem;
+    text-transform:uppercase;
+  }
+  .pop-card p{
+    font-size:1.05rem;
+    color:var(--ink);
+    opacity:0.9;
+    line-height:1.7;
+  }
+  .highlight-pill{
+    display:inline-block;
+    background:var(--yellow);
+    color:var(--ink);
+    font-weight:800;
+    padding:3px 12px;
+    border-radius:14px;
+    border:1.8px solid var(--ink);
+  }
+
+  /* ================= DYNAMIC EDUCATION ================= */
+  .timeline-cards{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:28px;
+  }
+  .tl-card{
+    background:#fff;
+    border:2px solid rgba(26,26,30,0.18);
+    border-radius:20px;
+    padding:28px 24px;
+    box-shadow:4px 4px 0 rgba(26,26,30,0.08);
+    position:relative;
+    transition:transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.4s ease;
+    display:flex;
+    flex-direction:column;
+  }
+  .tl-card:hover{
+    transform:translate(-2px, -2px);
+    border-color:var(--ink);
+    box-shadow:6px 6px 0 var(--ink);
+  }
+  .tl-badge-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:16px;
+    flex-wrap:wrap;
+  }
+  .tl-badge{
+    font-family:'Inter', sans-serif;
+    font-weight:700;
+    background:var(--paper);
+    color:var(--ink);
+    font-size:0.8rem;
+    padding:4px 12px;
+    border-radius:12px;
+    border:1.5px solid var(--ink);
+  }
+  .tl-year-pill{
+    font-weight:600;
+    font-size:0.8rem;
+    background:transparent;
+    color:var(--grey);
+    padding:3px 8px;
+    border-radius:8px;
+    border:1px solid rgba(26,26,30,0.15);
+  }
+  .tl-card h3{
+    font-size:1.25rem;
+    text-transform:uppercase;
+    margin-bottom:6px;
+    line-height:1.2;
+    color:var(--ink);
+  }
+  .tl-card .degree{
+    font-size:0.95rem;
+    color:var(--grey);
+    font-weight:600;
+    margin-bottom:16px;
+  }
+  .tl-card .grade-pill{
+    margin-top:auto;
+    align-self:flex-start;
+    font-size:0.82rem;
+    font-weight:700;
+    color:var(--ink);
+    background:var(--paper);
+    padding:4px 12px;
+    border-radius:10px;
+    border:1px solid rgba(26,26,30,0.15);
+  }
+
+  /* ================= EXPERTISE PANELS ================= */
+  .panels{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:28px;
+  }
+  .panel{
+    background:#fff;
+    color:var(--ink);
+    border:3.5px solid var(--ink);
+    border-radius:28px 28px 28px 8px;
+    padding:38px 30px;
+    position:relative;
+    transition:transform 0.25s ease, box-shadow 0.25s ease, border-radius 0.25s ease, background 0.4s ease, border-color 0.4s ease;
+    box-shadow:7px 7px 0 var(--ink);
+  }
+  .panel:hover{ transform:translate(-4px,-4px); box-shadow:11px 11px 0 var(--yellow); border-radius:8px 28px 28px 28px; }
+  .panel .badge{
+    display:inline-flex;
+    align-items:center; justify-content:center;
+    width:50px; height:50px;
+    border-radius:50%;
+    background:var(--yellow);
+    border:3px solid var(--ink);
+    font-family:'Anton', sans-serif;
+    font-size:1.2rem;
+    margin-bottom:20px;
+    box-shadow:2px 2px 0 var(--ink);
+  }
+  .panel h3{
+    font-size:1.4rem;
+    text-transform:uppercase;
+    margin-bottom:14px;
+  }
+  .panel p{
+    font-size:1rem;
+    opacity:0.85;
+    margin-bottom:20px;
+    line-height:1.6;
+  }
+  .tag-row{ display:flex; flex-wrap:wrap; gap:8px; }
+  .tag{
+    font-size:0.8rem;
+    font-weight:800;
+    padding:6px 14px;
+    border-radius:20px;
+    border:2px solid var(--ink);
+    color:var(--blue-dark);
+    background:var(--paper);
+  }
+
+  /* ================= FEATURED WORK ================= */
+  .filter-bar{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  .filter-btn{
+    font-family:'Anton', sans-serif;
+    font-size:1rem;
+    letter-spacing:0.5px;
+    padding:10px 24px;
+    border-radius:20px;
+    border:2.5px solid var(--ink);
+    background:#fff;
+    color:var(--ink);
+    transition:all 0.2s ease;
+    box-shadow:2px 2px 0 var(--ink);
+  }
+  .filter-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:4px 4px 0 var(--ink);
+    background:var(--yellow);
+  }
+  .filter-btn.active{
+    background:var(--red);
+    color:var(--paper);
+    box-shadow:3px 3px 0 var(--ink);
+  }
+
+  .projects-grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:36px;
+  }
+  .project-card{
+    background:#fff;
+    border:3.5px solid var(--ink);
+    border-radius:24px;
+    overflow:hidden;
+    box-shadow:7px 7px 0 var(--ink);
+    transition:transform 0.25s ease, box-shadow 0.25s ease, background 0.4s ease, border-color 0.4s ease;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+  }
+  .project-card:hover{
+    transform:translate(-4px, -4px);
+    box-shadow:12px 12px 0 var(--red);
+  }
+  .card-img-wrap{
+    width:100%;
+    height:260px;
+    overflow:hidden;
+    border-bottom:3.5px solid var(--ink);
+    background:linear-gradient(135deg, var(--blue-dark), var(--blue));
+    position:relative;
+  }
+  .card-img-wrap img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:transform 0.4s ease;
+  }
+  .project-card:hover .card-img-wrap img{
+    transform:scale(1.06);
+  }
+  .card-img-placeholder{
+    width:100%; height:100%;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    color:var(--paper);
+    font-family:'Anton', sans-serif;
+    font-size:1.8rem;
+    text-transform:uppercase;
+    letter-spacing:1px;
+  }
+  .card-badge{
+    position:absolute;
+    top:14px; right:14px;
+    background:var(--yellow);
+    color:var(--ink);
+    font-family:'Anton', sans-serif;
+    font-size:0.85rem;
+    padding:5px 14px;
+    border-radius:12px;
+    border:2px solid var(--ink);
+    box-shadow:2px 2px 0 var(--ink);
+  }
+  .card-body{
+    padding:28px;
+    display:flex;
+    flex-direction:column;
+    flex-grow:1;
+  }
+  .card-title{
+    font-size:1.45rem;
+    text-transform:uppercase;
+    margin-bottom:10px;
+  }
+  .card-desc{
+    font-size:1rem;
+    color:var(--ink);
+    opacity:0.85;
+    margin-bottom:22px;
+    flex-grow:1;
+    line-height:1.6;
+  }
+  .card-footer{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+    padding-top:16px;
+    border-top:2px dashed var(--line);
+  }
+
+  .hidden-drawer{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  .hidden-drawer.open{
+    max-height:2000px;
+    margin-top:36px;
+  }
+
+  .expand-bar-wrap{
+    margin-top:48px;
+    text-align:center;
+  }
+  .expand-bar{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+    width:100%;
+    padding:20px 32px;
+    background:var(--yellow);
+    color:var(--ink);
+    font-family:'Anton', sans-serif;
+    font-size:1.3rem;
+    text-transform:uppercase;
+    border:3.5px solid var(--ink);
+    border-radius:18px;
+    box-shadow:6px 6px 0 var(--ink);
+    transition:transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  }
+  .expand-bar:hover{
+    transform:translate(-2px, -2px);
+    box-shadow:8px 8px 0 var(--red);
+    background:var(--paper);
+  }
+  .expand-icon{
+    width:22px; height:22px;
+    transition:transform 0.3s ease;
+  }
+  .expand-bar.open .expand-icon{
+    transform:rotate(180deg);
+  }
+
+  .project-card.filtered-out{
+    display:none !important;
+  }
+
+  /* ================= TECHNICAL ARSENAL SECTION ================= */
+  .tech-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:24px;
+  }
+  .tech-card{
+    background:var(--paper);
+    border:3.5px solid var(--ink);
+    border-radius:20px;
+    padding:28px 24px;
+    box-shadow:6px 6px 0 var(--ink);
+    transition:transform 0.2s ease, box-shadow 0.2s ease, background 0.4s ease, border-color 0.4s ease;
+  }
+  .tech-card:hover{
+    transform:translate(-3px, -3px);
+    box-shadow:9px 9px 0 var(--red);
+  }
+  .tech-card-header{
+    font-family:'Anton', sans-serif;
+    font-size:1.25rem;
+    text-transform:uppercase;
+    color:var(--red);
+    margin-bottom:16px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .tech-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .tech-pill{
+    font-size:0.85rem;
+    font-weight:800;
+    padding:6px 14px;
+    background:#fff;
+    color:var(--ink);
+    border:2px solid var(--ink);
+    border-radius:14px;
+    box-shadow:2px 2px 0 var(--ink);
+  }
+
+  /* ================= HOBBY SECTION ================= */
+  .hobby-showcase-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:36px;
+  }
+  .hobby-feature-card{
+    background:#FFFFFF;
+    border:3.5px solid var(--ink);
+    border-radius:28px;
+    padding:36px;
+    color:var(--ink);
+    display:flex;
+    flex-direction:column;
+    box-shadow:8px 8px 0 var(--ink);
+  }
+  .hobby-feature-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:16px;
+  }
+  .hobby-title-wrap{
+    display:flex;
+    align-items:center;
+    gap:16px;
+  }
+  .hobby-emoji{
+    font-size:2.5rem;
+    background:var(--yellow);
+    border:3px solid var(--ink);
+    width:64px; height:64px;
+    border-radius:18px;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:4px 4px 0 var(--ink);
+    flex-shrink: 0;
+    color: var(--ink);
+  }
+  .hobby-emoji svg{
+    width:32px;
+    height:32px;
+    fill:currentColor;
+  }
+  .hobby-feature-card h3{
+    font-size:1.8rem;
+    text-transform:uppercase;
+    color:var(--ink);
+  }
+  .hobby-feature-card p{
+    margin-top:12px;
+    font-size:1.05rem;
+    color:var(--ink);
+    opacity:0.9;
+    max-width:70ch;
+  }
+
+  body.venom-mode .hobby-feature-card h3 {
+    color: #FFFFFF !important;
+  }
+  body.venom-mode .hobby-feature-card p {
+    color: #FFFFFF !important;
+    opacity: 1 !important;
+  }
+
+  .explore-btn{
+    font-family:'Anton', sans-serif;
+    font-size:1.1rem;
+    text-transform:uppercase;
+    padding:12px 28px;
+    border-radius:20px;
+    border:3px solid var(--ink);
+    background:var(--yellow);
+    color:var(--ink);
+    box-shadow:4px 4px 0 var(--ink);
+    transition:transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+  }
+  .explore-btn:hover{
+    transform:translate(-2px, -2px);
+    box-shadow:6px 6px 0 var(--red);
+    background:var(--paper);
+  }
+
+  /* Hobby Gallery Drawer */
+  .hobby-gallery-drawer{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  .hobby-gallery-drawer.open{
+    max-height:1500px;
+    margin-top:28px;
+  }
+  .gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:24px;
+    padding-top:10px;
+  }
+  .gallery-card{
+    background:#fff;
+    border:3px solid var(--ink);
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:5px 5px 0 var(--ink);
+    height:220px;
+    position:relative;
+  }
+  .gallery-card-placeholder{
+    width:100%; height:100%;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    background:linear-gradient(135deg, var(--red-dark), var(--red));
+    color:var(--paper);
+    font-family:'Anton', sans-serif;
+    font-size:1.3rem;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    padding:16px;
+    text-align:center;
+  }
+
+  /* ================= CONTACT ================= */
+  #contact{ background:var(--ink); color:var(--paper); padding:140px 0; transition: background 0.4s ease; }
+  .contact-box{ text-align:center; }
+  .contact-box h2{
+    font-size:clamp(2.4rem, 5.5vw, 3.6rem);
+    text-transform:uppercase;
+    margin-bottom:20px;
+    color:var(--paper);
+  }
+  .contact-box p{
+    color:var(--paper);
+    opacity:0.85;
+    font-size:1.1rem;
+    max-width:54ch;
+    margin:0 auto 36px;
+  }
+  .contact-links{
+    display:flex; justify-content:center; gap:16px; flex-wrap:wrap; max-width:900px; margin:0 auto;
+  }
+  .contact-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:14px 28px;
+    font-weight:800;
+    font-size:0.98rem;
+    border-radius:999px;
+    border:3px solid var(--ink);
+    background:#FFFFFF;
+    color:var(--ink);
+    transition:transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, color 0.15s ease;
+    box-shadow:4px 4px 0 var(--paper);
+  }
+  .contact-btn:hover{
+    transform:translate(-2px,-2px);
+    box-shadow:6px 6px 0 var(--yellow);
+    background:var(--yellow);
+    color:var(--ink);
+    border-color:var(--ink);
+  }
+
+  footer{
+    padding:34px 0;
+    text-align:center;
+    color:var(--paper);
+    background:var(--ink);
+    font-size:0.9rem;
+    border-top:1px solid rgba(245,239,223,0.15);
+    transition: background 0.4s ease;
+  }
+  footer .red{ color:var(--red); font-weight:700; }
+
+  /* ================= RESPONSIVE ================= */
+  @media (max-width:1100px){
+    .margin-doodle{ display:none; }
+    .timeline-cards{ grid-template-columns:1fr; }
+    .tech-grid{ grid-template-columns:repeat(2, 1fr); }
+    .gallery-grid{ grid-template-columns:repeat(2, 1fr); }
+  }
+
+  @media (max-width:860px){
+    /* Hero & Layout adjustments */
+    header.hero { padding-top: 100px; padding-bottom: 80px; }
+    .hero-grid{ grid-template-columns:1fr; text-align:center; gap:36px; }
+    .eyebrow-tag{ margin-left:auto; margin-right:auto; }
+    .hero-desc, .hero-role{ margin-left:auto; margin-right:auto; }
+    .hero-cta{ justify-content:center; }
+    .portrait-frame{ order:-1; width:min(420px, 85vw); margin-bottom:10px; }
+    
+    .about-cards-grid{ grid-template-columns:1fr; }
+    .projects-grid{ grid-template-columns:1fr; }
+    .panels{ grid-template-columns:1fr; }
+    .doodle-spider, .dangler{ display:none; }
+    .gallery-grid{ grid-template-columns:1fr; }
+
+    /* Tablet/Mobile Navbar */
+    .nav-toggle { display:block; }
+    .nav-links {
+      position: absolute;
+      top: 68px; left: 0; right: 0;
+      background: var(--paper);
+      border-bottom: 3px solid var(--ink);
+      flex-direction: column;
+      gap: 0;
+      padding: 12px 20px;
+      display: none;
+      box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+    }
+    .nav-links.open { display: flex; }
+    .nav-links a {
+      padding: 12px 16px;
+      font-size: 1rem;
+      border-bottom: 1px dashed var(--line);
+      border-radius: 0;
+    }
+    .nav-links a:last-child { border-bottom: none; }
+  }
+
+  @media (max-width:520px){
+    .wrap{ padding:0 20px; }
+    section{ padding:80px 0; }
+    .btn, .contact-btn{ padding:14px 22px; font-size:0.92rem; width:100%; text-align:center; justify-content:center; }
+    .hero-cta{ flex-direction:column; gap:12px; }
+    .pow{ width:72px; height:72px; font-size:1rem; top:-20px; right:-12px; }
+    .portrait-blob{ inset:-20px; }
+    .filter-bar{ width:100%; justify-content:flex-start; }
+    .tech-grid{ grid-template-columns:1fr; }
+    .hobby-feature-card { padding: 24px; }
+    .hobby-title-wrap { flex-direction: column; text-align: center; }
+    .hobby-feature-header { flex-direction: column; align-items: center; text-align: center; }
+    .explore-btn { width: 100%; justify-content: center; }
+    .pop-card { padding: 24px; }
+    .panel { padding: 28px 20px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
+
+  :focus-visible{ outline:3px solid var(--red); outline-offset:3px; }
+</style>
+</head>
+<body>
+
+<div class="symbiote-ooze"></div>
+<svg class="symbiote-tendril tendril-left" viewBox="0 0 260 420" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" stroke="#8b2fd6" stroke-width="4" stroke-linecap="round" opacity="0.7">
+    <path d="M10,420 C40,340 0,260 50,200 C90,150 40,90 80,20"/>
+    <path d="M40,420 C70,350 30,280 70,220"/>
+    <path d="M-10,380 C30,330 -10,260 30,210"/>
+  </g>
+</svg>
+<svg class="symbiote-tendril tendril-right" viewBox="0 0 240 380" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" opacity="0.5">
+    <path d="M230,0 C200,80 240,150 190,210 C150,260 200,320 160,380"/>
+    <path d="M200,0 C170,70 210,140 170,190"/>
+  </g>
+</svg>
+
+<div id="loader">
+  <div class="thread-wrap">
+    <div class="thread">
+      <svg class="loader-spider" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+        <g fill="none" stroke="#F5EFDF" stroke-width="2.4" stroke-linecap="round">
+          <line x1="16" y1="13" x2="4" y2="6"/><line x1="16" y1="15" x2="2" y2="14"/>
+          <line x1="16" y1="17" x2="3" y2="22"/><line x1="16" y1="19" x2="7" y2="28"/>
+          <line x1="16" y1="13" x2="28" y2="6"/><line x1="16" y1="15" x2="30" y2="14"/>
+          <line x1="16" y1="17" x2="29" y2="22"/><line x1="16" y1="19" x2="25" y2="28"/>
+        </g>
+        <ellipse cx="16" cy="19.5" rx="6" ry="7" fill="#E8232A"/>
+        <circle cx="16" cy="11" r="4" fill="#1A1A1E"/>
+      </svg>
+    </div>
+  </div>
+  <h2>Let's do this one more time</h2>
+  <div class="loader-progress-container">
+    <svg class="progress-spider" id="loader-spider-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+      <g fill="none" stroke="#F5EFDF" stroke-width="2.4" stroke-linecap="round">
+        <line x1="16" y1="13" x2="4" y2="6"/><line x1="16" y1="15" x2="2" y2="14"/>
+        <line x1="16" y1="17" x2="3" y2="22"/><line x1="16" y1="19" x2="7" y2="28"/>
+        <line x1="16" y1="13" x2="28" y2="6"/><line x1="16" y1="15" x2="30" y2="14"/>
+        <line x1="16" y1="17" x2="29" y2="22"/><line x1="16" y1="19" x2="25" y2="28"/>
+      </g>
+      <ellipse cx="16" cy="19.5" rx="6" ry="7" fill="#E8232A"/>
+      <circle cx="16" cy="11" r="4" fill="#1A1A1E"/>
+    </svg>
+    <div class="loader-progress"><div class="loader-progress-fill" id="loader-fill"></div></div>
+    <div class="loader-pct" id="loader-pct">0%</div>
+  </div>
+</div>
+
+<div id="cursor-spider">
+  <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+    <g class="legs" fill="none" stroke="white" stroke-width="3.2" stroke-linecap="round">
+      <line x1="16" y1="13" x2="4" y2="6"/><line x1="16" y1="15" x2="2" y2="14"/>
+      <line x1="16" y1="17" x2="3" y2="22"/><line x1="16" y1="19" x2="7" y2="28"/>
+      <line x1="16" y1="13" x2="28" y2="6"/><line x1="16" y1="15" x2="30" y2="14"/>
+      <line x1="16" y1="17" x2="29" y2="22"/><line x1="16" y1="19" x2="25" y2="28"/>
+    </g>
+    <g class="legs" fill="none" stroke="#1A1A1E" stroke-width="1.5" stroke-linecap="round">
+      <line x1="16" y1="13" x2="4" y2="6"/><line x1="16" y1="15" x2="2" y2="14"/>
+      <line x1="16" y1="17" x2="3" y2="22"/><line x1="16" y1="19" x2="7" y2="28"/>
+      <line x1="16" y1="13" x2="28" y2="6"/><line x1="16" y1="15" x2="30" y2="14"/>
+      <line x1="16" y1="17" x2="29" y2="22"/><line x1="16" y1="19" x2="25" y2="28"/>
+    </g>
+    <ellipse cx="16" cy="19.5" rx="6.2" ry="7.2" fill="#E8232A" stroke="white" stroke-width="1.6"/>
+    <circle cx="16" cy="11" r="4.3" fill="#1A1A1E" stroke="white" stroke-width="1.6"/>
+  </svg>
+</div>
+
+<nav>
+  <div class="wrap">
+    <div class="nav-mark">MD SEEMAN <span>ISLAM</span></div>
+    
+    <div class="nav-right-wrap">
+      <div class="nav-links" id="nav-links">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#education">Education</a>
+        <a href="#expertise">Expertise</a>
+        <a href="#work">Work</a>
+        <a href="#tech">Arsenal</a>
+        <a href="#hobby">Hobby</a>
+        <a href="#contact">Contact</a>
+      </div>
+
+      <!-- Venom Theme Toggle Button -->
+      <button class="theme-toggle-btn" id="venom-toggle" title="Toggle Venom Mode">
+        <svg viewBox="0 0 24 24" id="theme-icon">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM12 4v16c4.41 0 8-3.59 8-8s-3.59-8-8-8z"/>
+        </svg>
+      </button>
+
+      <button class="nav-toggle" id="nav-toggle-btn">MENU ☰</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="home">
+  <!-- Side Doodle Callouts -->
+  <div class="margin-doodle doodle-left-pow">THWIP!</div>
+  <div class="margin-doodle doodle-left-boom">BOOM!</div>
+  <div class="margin-doodle doodle-right-badge">DESIGN · CODE · EDIT</div>
+  <div class="margin-doodle doodle-right-zip">ZIP!</div>
+  <div class="margin-doodle doodle-bottom-left">WEB-SLINGER</div>
+  <div class="margin-doodle doodle-bottom-right">WHAM!</div>
+
+  <!-- Re-aligned Geometric Web Background -->
+  <svg class="web-lines" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+    <g stroke="#F5EFDF" stroke-width="1.2" fill="none" opacity="0.22">
+      <line x1="0" y1="0" x2="450" y2="0"/>
+      <line x1="0" y1="0" x2="380" y2="220"/>
+      <line x1="0" y1="0" x2="240" y2="380"/>
+      <line x1="0" y1="0" x2="0" y2="450"/>
+      <path d="M 120,0 Q 110,110 0,120"/>
+      <path d="M 230,0 Q 210,210 0,230"/>
+      <path d="M 340,0 Q 300,300 0,340"/>
+    </g>
+    <g stroke="#F5EFDF" stroke-width="1.2" fill="none" opacity="0.25">
+      <line x1="1200" y1="0" x2="750" y2="0"/>
+      <line x1="1200" y1="0" x2="820" y2="220"/>
+      <line x1="1200" y1="0" x2="960" y2="380"/>
+      <line x1="1200" y1="0" x2="1200" y2="450"/>
+      <path d="M 1080,0 Q 1090,110 1200,120"/>
+      <path d="M 970,0 Q 990,210 1200,230"/>
+      <path d="M 860,0 Q 900,300 1200,340"/>
+    </g>
+    <g stroke="#FFD23F" stroke-width="0.8" fill="none" opacity="0.15">
+      <circle cx="600" cy="400" r="180"/>
+      <circle cx="600" cy="400" r="320"/>
+      <line x1="600" y1="0" x2="600" y2="800"/>
+      <line x1="0" y1="400" x2="1200" y2="400"/>
+      <line x1="200" y1="0" x2="1000" y2="800"/>
+      <line x1="1000" y1="0" x2="200" y2="800"/>
+    </g>
+  </svg>
+
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow-tag">Frontend Developer · Graphics Designer · Video Editor</div>
+      <h1 class="hero-name">MD SEEMAN<br>ISLAM</h1>
+      <p class="hero-role">Your friendly neighborhood web developer.</p>
+      <p class="hero-desc">I build interfaces, design visuals, and cut stories together — one craft, three tools, zero boring portfolios.</p>
+      <div class="hero-cta">
+        <a href="#expertise" class="btn btn-solid">See my skills</a>
+        <a href="#contact" class="btn btn-outline">Get in touch</a>
+      </div>
+    </div>
+
+    <div class="portrait-frame">
+      <div class="portrait-blob"></div>
+      <div class="pow">POW!</div>
+      <div class="portrait-ring"></div>
+      <div class="portrait-hex" id="portrait-hex">
+        <div class="spidey-cover">
+          <img src="Image/spiderman_cover.png" alt="Cover Photo" id="spiderman-img">
+        </div>
+        <!-- Underneath Photo Revealed on Hover/Tap -->
+        <div class="photo-reveal-layer" id="photo-layer">
+          <img src="Image/seemanto.jpg" alt="MD Seeman Islam" style="width:100%; height:100%; object-fit:cover;">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dangler">
+    <div class="doodle-spider">
+      <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+        <g fill="none" stroke="#F5EFDF" stroke-width="2" stroke-linecap="round">
+          <line x1="16" y1="13" x2="4" y2="6"/><line x1="16" y1="15" x2="2" y2="14"/>
+          <line x1="16" y1="17" x2="3" y2="22"/><line x1="16" y1="19" x2="7" y2="28"/>
+          <line x1="16" y1="13" x2="28" y2="6"/><line x1="16" y1="15" x2="30" y2="14"/>
+          <line x1="16" y1="17" x2="29" y2="22"/><line x1="16" y1="19" x2="25" y2="28"/>
+        </g>
+        <ellipse cx="16" cy="19.5" rx="6" ry="7" fill="#1A1A1E"/>
+        <circle cx="16" cy="11" r="4" fill="#E8232A"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 90" preserveAspectRatio="none">
+      <path d="M0,40 C240,90 480,0 720,30 C960,60 1200,10 1440,40 L1440,90 L0,90 Z" fill="#F5EFDF"/>
+    </svg>
+  </div>
+</header>
+
+<!-- ================= ABOUT ================= -->
+<section id="about">
+  <div class="halftone"></div>
+  <div class="texture-grid"></div>
+
+  <div class="margin-doodle" style="top:25%; left:2.5%; background:var(--yellow); transform:rotate(-8deg);">ORIGIN STORY</div>
+  <div class="margin-doodle" style="bottom:20%; right:3%; background:var(--red); color:var(--paper); transform:rotate(10deg);">3 CRAFTS</div>
+
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-head-title-wrap">
+        <h2>About</h2>
+        <span class="num">01</span>
+      </div>
+    </div>
+
+    <div class="about-cards-grid">
+      <div class="pop-card">
+        <div class="pop-card-header">
+          <div class="pop-icon"> «» </div>
+          <h3>Full Spectrum Craft</h3>
+        </div>
+        <p>I move seamlessly between three core disciplines: <span class="highlight-pill">Building Websites</span>, <span class="highlight-pill">Designing Graphics</span>, and <span class="highlight-pill">Video Editing</span>. I don't treat them as disconnected tasks, but as a complete toolkit to bring ideas to life.</p>
+      </div>
+
+      <div class="pop-card">
+        <div class="pop-card-header">
+          <div class="pop-icon"> ∞ </div>
+          <h3>End-To-End Execution</h3>
+        </div>
+        <p>From initial design mockups to production-ready frontend code and animated video cuts — I deliver polished digital experiences without needing hand-offs halfway through the process.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="doodle-spider crawl-a" style="bottom:20px; left:6%;">
+    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+      <g fill="none" stroke="#1A1A1E" stroke-width="2" stroke-linecap="round">
+        <line x1="16" y1="13" x2="4" y2="6"/><line x1="16" y1="15" x2="2" y2="14"/>
+        <line x1="16" y1="17" x2="3" y2="22"/><line x1="16" y1="19" x2="7" y2="28"/>
+        <line x1="16" y1="13" x2="28" y2="6"/><line x1="16" y1="15" x2="30" y2="14"/>
+        <line x1="16" y1="17" x2="29" y2="22"/><line x1="16" y1="19" x2="25" y2="28"/>
+      </g>
+      <ellipse cx="16" cy="19.5" rx="6" ry="7" fill="#E8232A"/>
+      <circle cx="16" cy="11" r="4" fill="#1A1A1E"/>
+    </svg>
+  </div>
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 90" preserveAspectRatio="none">
+      <path d="M0,50 C240,10 480,80 720,45 C960,10 1200,70 1440,30 L1440,90 L0,90 Z" fill="#fff"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ================= EDUCATION ================= -->
+<section id="education">
+  <div class="texture-grid"></div>
+
+  <div class="margin-doodle" style="top:30%; right:2.5%; background:var(--yellow); transform:rotate(-6deg);">KNOWLEDGE HUB</div>
+  <div class="margin-doodle" style="bottom:25%; left:2.5%; background:var(--paper); transform:rotate(8deg);">BUILD & LEARN</div>
+
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-head-title-wrap">
+        <h2>Education</h2>
+        <span class="num">02</span>
+      </div>
+    </div>
+
+    <div class="timeline-cards">
+      <div class="tl-card">
+        <div class="tl-badge-row">
+          <span class="tl-badge">B.Sc. Degree</span>
+          <span class="tl-year-pill">Jan 2023 - Ongoing</span>
+        </div>
+        <h3>University of Asia Pacific</h3>
+        <div class="degree">B.Sc. in Computer Science and Engineering</div>
+        <div class="grade-pill">Current CGPA: 3.47 / 4.00</div>
+      </div>
+
+      <div class="tl-card">
+        <div class="tl-badge-row">
+          <span class="tl-badge">HSC</span>
+          <span class="tl-year-pill">Passed 2021</span>
+        </div>
+        <h3>St. Gregory's High School & College</h3>
+        <div class="degree">Higher Secondary Certificate (Science)</div>
+        <div class="grade-pill">GPA: 5.00 / 5.00</div>
+      </div>
+
+      <div class="tl-card">
+        <div class="tl-badge-row">
+          <span class="tl-badge">SSC</span>
+          <span class="tl-year-pill">Passed 2019</span>
+        </div>
+        <h3>Dhaka Govt. Muslim High School</h3>
+        <div class="degree">Secondary School Certificate (Science)</div>
+        <div class="grade-pill">GPA: 4.89 / 5.00</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 90" preserveAspectRatio="none">
+      <path d="M0,30 C240,70 480,10 720,40 C960,70 1200,20 1440,50 L1440,90 L0,90 Z" fill="#1B4FCC"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ================= EXPERTISE ================= -->
+<section id="expertise">
+  <div class="halftone-light"></div>
+
+  <div class="margin-doodle" style="top:20%; left:3%; background:var(--red); color:var(--paper); transform:rotate(-10deg);">SKILLSET</div>
+  <div class="margin-doodle" style="bottom:22%; right:3%; background:var(--yellow); color:var(--ink); transform:rotate(6deg);">SWOOSH!</div>
+
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-head-title-wrap">
+        <h2>Expertise</h2>
+        <span class="num">03</span>
+      </div>
+    </div>
+    <div class="panels">
+      <div class="panel">
+        <div class="badge">&lt;/&gt;</div>
+        <h3>Frontend Development</h3>
+        <p>Building responsive, interactive websites from scratch, with attention to layout and detail.</p>
+        <div class="tag-row">
+          <span class="tag">HTML/CSS</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">Responsive UI</span>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="badge">✎</div>
+        <h3>Graphics Design</h3>
+        <p>Creating visual assets — from social posts to branding — with a clear, consistent look.</p>
+        <div class="tag-row">
+          <span class="tag">Branding</span>
+          <span class="tag">Layout</span>
+          <span class="tag">Digital Art</span>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="badge">▶</div>
+        <h3>Video Editing</h3>
+        <p>Cutting raw footage into finished videos — pacing, transitions, color, and sound.</p>
+        <div class="tag-row">
+          <span class="tag">Editing</span>
+          <span class="tag">Color Grade</span>
+          <span class="tag">Motion</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doodle-spider crawl-b" style="top:60px; right:8%;">
+    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+      <g fill="none" stroke="#1A1A1E" stroke-width="2" stroke-linecap="round">
+        <line x1="16" y1="13" x2="4" y2="6"/><line x1="16" y1="15" x2="2" y2="14"/>
+        <line x1="16" y1="17" x2="3" y2="22"/><line x1="16" y1="19" x2="7" y2="28"/>
+        <line x1="16" y1="13" x2="28" y2="6"/><line x1="16" y1="15" x2="30" y2="14"/>
+        <line x1="16" y1="17" x2="29" y2="22"/><line x1="16" y1="19" x2="25" y2="28"/>
+      </g>
+      <ellipse cx="16" cy="19.5" rx="6" ry="7" fill="#FFD23F"/>
+      <circle cx="16" cy="11" r="4" fill="#1A1A1E"/>
+    </svg>
+  </div>
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 90" preserveAspectRatio="none">
+      <path d="M0,45 C240,5 480,75 720,35 C960,0 1200,60 1440,25 L1440,90 L0,90 Z" fill="#F5EFDF"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ================= FEATURED WORK ================= -->
+<section id="work">
+  <div class="halftone"></div>
+  <div class="texture-grid"></div>
+
+  <div class="margin-doodle" style="top:18%; left:2.5%; background:var(--yellow); transform:rotate(-8deg);">PORTFOLIO</div>
+  <div class="margin-doodle" style="bottom:18%; right:2.5%; background:var(--red); color:var(--paper); transform:rotate(12deg);">FEATURED</div>
+
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-head-title-wrap">
+        <h2>Featured Work</h2>
+        <span class="num">04</span>
+      </div>
+      <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="full-stack">Full-Stack</button>
+        <button class="filter-btn" data-filter="graphics">Graphics</button>
+      </div>
+    </div>
+
+    <div class="projects-grid" id="featured-grid">
+      <div class="project-card" data-category="full-stack">
+        <div class="card-img-wrap">
+          <span class="card-badge">Full-Stack</span>
+          <img src="Featured_work/Greengrains.png" alt="Project Screenshot">
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Green Grrains</h3>
+          <p class="card-desc">A Django-based online grocery store with subscription meal-plan ordering. Customers browse fresh produce, meat, fish, and spices, build recurring delivery plans, and check out.</p>
+          <div class="card-footer">
+            <div class="tag-row">
+              <span class="tag">Python</span>
+              <span class="tag">Django</span> 
+              <span class="tag">Pillow</span> 
+            </div>
+            <a href="https://github.com/shimanto616/Green-Grains" target="_blank" rel="noopener" class="btn btn-solid" style="padding:8px 18px; font-size:0.85rem;">View Project</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card" data-category="full-stack">
+        <div class="card-img-wrap">
+          <span class="card-badge">Full-Stack</span>
+          <img src="Featured_work/Pawfectcare.png" alt="Project Screenshot">
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Pawfect Care</h3>
+          <p class="card-desc">A Pet care management system designed for tracking pet records, health, and services.</p>
+          <div class="card-footer">
+            <div class="tag-row">
+              <span class="tag">Python</span>
+              <span class="tag">Django</span>
+              <span class="tag">Django Rest Framework</span>
+              <span class="tag">Pillow</span> 
+            </div>
+            <a href="https://github.com/shimanto616/PawfectCare" target="_blank" rel="noopener" class="btn btn-solid" style="padding:8px 18px; font-size:0.85rem;">View Project</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card" data-category="graphics">
+        <div class="card-img-wrap">
+          <span class="card-badge">Graphics</span>
+          <img src="Featured_work/Art_&_Design_Expo_Banner.png" alt="Project Screenshot">
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Art Expo 2026</h3>
+          <p class="card-desc">A custom art expo banner </p>
+          <div class="card-footer">
+            <div class="tag-row">
+              <span class="tag">Adobe Illustrator</span>
+              <span class="tag">Adobe Photoshop</span>
+            </div>
+          </div>
+        </div>
+      </div> 
+
+      <div class="project-card" data-category="graphics">
+        <div class="card-img-wrap">
+          <span class="card-badge">Graphics</span>
+          <img src="Featured_work/coffee_bakery_banner.png" alt="Project Screenshot">
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Gloria Coffe & Bakery</h3>
+          <p class="card-desc">Coffeshop & Bakeryshop banner</p>
+          <div class="card-footer">
+            <div class="tag-row">
+              <span class="tag">Adobe Illustrator</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> 
+
+    <div class="hidden-drawer" id="hidden-projects-drawer">
+      <!-- 
+      <div class="projects-grid">
+        <div class="project-card" data-category="full-stack">
+          <div class="card-img-wrap">
+            <span class="card-badge">Full-Stack</span>
+            <div class="card-img-placeholder">Full Stack project 3</div>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title">Banainai apatoto</h3>
+            <p class="card-desc">NO description, because project ei banainai</p>
+            <div class="card-footer">
+              <div class="tag-row">
+                <span class="tag">tech</span>
+                <span class="tag">aro tech</span>
+                <span class="tag">matha fata tech</span>
+              </div>
+              <a href="#" class="btn btn-solid" style="padding:8px 18px; font-size:0.85rem;">View Details</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card" data-category="graphics">
+          <div class="card-img-wrap">
+            <span class="card-badge">Graphic Project 3</span>
+            <div class="card-img-placeholder">Social Media Kit</div>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title">Kichu tinta</h3>
+            <p class="card-desc">Aro beshi desctiption</p>
+            <div class="card-footer">
+              <div class="tag-row">
+                <span class="tag">at this point</span>
+                <span class="tag">i dont have any</span>
+                <span class="tag">creativity left ;-;</span>
+              </div>
+              <a href="#" class="btn btn-solid" style="padding:8px 18px; font-size:0.85rem;">View Gallery</a>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    </div> 
+
+    <div class="expand-bar-wrap">
+      <button class="expand-bar" id="expand-projects-btn">
+        <span id="expand-text">Show All Projects</span>
+        <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 90" preserveAspectRatio="none">
+      <path d="M0,45 C240,5 480,75 720,35 C960,0 1200,60 1440,25 L1440,90 L0,90 Z" fill="#fff"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ================= TECHNICAL ARSENAL SECTION ================= -->
+<section id="tech">
+  <div class="texture-grid"></div>
+
+  <div class="margin-doodle" style="top:22%; left:2.5%; background:var(--yellow); transform:rotate(-10deg);">TECH STACK</div>
+  <div class="margin-doodle" style="bottom:20%; right:2.5%; background:var(--red); color:var(--paper); transform:rotate(8deg);">TOOLKIT</div>
+
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-head-title-wrap">
+        <h2>Technical Arsenal</h2>
+        <span class="num">05</span>
+      </div>
+    </div>
+
+    <div class="tech-grid">
+      <div class="tech-card">
+        <div class="tech-card-header">Frontend UI</div>
+        <div class="tech-list">
+          <span class="tech-pill">HTML5</span>
+          <span class="tech-pill">CSS3</span>
+          <span class="tech-pill">JavaScript</span>
+          <span class="tech-pill">Next.js</span>
+        </div>
+      </div>
+
+      <div class="tech-card">
+        <div class="tech-card-header">Programming</div>
+        <div class="tech-list">
+          <span class="tech-pill">C</span>
+          <span class="tech-pill">C++</span>
+          <span class="tech-pill">Java</span>
+          <span class="tech-pill">Python</span>
+        </div>
+      </div>
+
+      <div class="tech-card">
+        <div class="tech-card-header">Databases</div>
+        <div class="tech-list">
+          <span class="tech-pill">MySQL</span>
+          <span class="tech-pill">SQLite</span>
+        </div>
+      </div>
+
+      <div class="tech-card">
+        <div class="tech-card-header">Frameworks & Tools</div>
+        <div class="tech-list">
+          <span class="tech-pill">Django</span>
+          <span class="tech-pill">Git / GitHub</span>
+          <span class="tech-pill">Photoshop</span>
+          <span class="tech-pill">Premiere Pro</span>
+          <span class="tech-pill">Illustrator</span>
+          <span class="tech-pill">Canva</span>
+          <span class="tech-pill">Krita</span>
+          <span class="tech-pill">Clip Studio Paint</span>
+          <span class="tech-pill">Figma</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 90" preserveAspectRatio="none">
+      <path d="M0,30 C240,70 480,10 720,40 C960,70 1200,20 1440,50 L1440,90 L0,90 Z" fill="#1B4FCC"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ================= DYNAMIC HOBBY SECTION ================= -->
+<section id="hobby">
+  <div class="halftone-light"></div>
+
+  <div class="margin-doodle" style="top:20%; right:3%; background:var(--yellow); color:var(--ink); transform:rotate(8deg);">OFF DUTY</div>
+  <div class="margin-doodle" style="bottom:22%; left:3%; background:var(--paper); color:var(--blue-dark); transform:rotate(-8deg);">CREATIVE LOUNGE</div>
+
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-head-title-wrap">
+        <h2>Hobbies & Passion</h2>
+        <span class="num">06</span>
+      </div>
+    </div>
+
+    <div class="hobby-showcase-grid">
+      <!-- 1. Singing Card -->
+      <div class="hobby-feature-card">
+        <div class="hobby-feature-header">
+          <div class="hobby-title-wrap">
+            <div class="hobby-emoji">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3>Singing & Vocal Expression</h3>
+              <p>Music is where I unwind and channel emotion outside of code. I love performing covers, experimenting with vocal styles, and jamming during off-hours.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Artwork Card with Expandable Gallery Drawer -->
+      <div class="hobby-feature-card">
+        <div class="hobby-feature-header">
+          <div class="hobby-title-wrap">
+            <div class="hobby-emoji">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12c0 5.52 4.48 10 10 10 1.5 0 2.75-1.25 2.75-2.75 0-.7-.28-1.3-.73-1.74-.45-.45-.72-1.05-.72-1.71 0-1.33 1.07-2.4 2.4-2.4H18c3.31 0 6-2.69 6-6 0-4.97-5.37-9.4-12-9.4zm-5.5 11c-.83 0-1.5-.67-1.5-1.5S5.67 10 6.5 10s1.5.67 1.5 1.5S7.33 13 6.5 13zm3-4C8.67 9 8 8.33 8 7.5S8.67 6 9.5 6s1.5.67 1.5 1.5S10.33 9 9.5 9zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 6 14.5 6s1.5.67 1.5 1.5S15.33 9 14.5 9zm3.5 4c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+              </svg>
+            </div>
+            <div>
+              <h3>Artwork & Illustration</h3>
+              <p>From digital sketches to comic-inspired drawings, visual creativity is core to how I think about layout, color composition, and design.</p>
+            </div>
+          </div>
+          <button class="explore-btn" id="art-toggle-btn">
+            <span id="art-btn-text">Explore Artwork</span>
+            <svg style="width:18px;height:18px;transition:transform 0.3s;" id="art-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+        </div>
+
+        <!-- Hidden Artwork Gallery Drawer -->
+        <div class="hobby-gallery-drawer" id="art-drawer">
+          <div class="gallery-grid">
+            <div class="gallery-card"><div class="gallery-card-placeholder">Sketch #01</div></div>
+            <div class="gallery-card"><div class="gallery-card-placeholder">Digital Art #02</div></div>
+            <div class="gallery-card"><div class="gallery-card-placeholder">Comic Poster #03</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Photography Card with Expandable Gallery Drawer -->
+      <div class="hobby-feature-card">
+        <div class="hobby-feature-header">
+          <div class="hobby-title-wrap">
+            <div class="hobby-emoji">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </div>
+            <div>
+              <h3>Photography</h3>
+              <p>Capturing candid moments, urban perspectives, and unique lighting in everyday life helps train my eye for visual composition.</p>
+            </div>
+          </div>
+          <button class="explore-btn" id="photo-toggle-btn">
+            <span id="photo-btn-text">Explore Photos</span>
+            <svg style="width:18px;height:18px;transition:transform 0.3s;" id="photo-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+        </div>
+
+        <!-- Hidden Photography Gallery Drawer -->
+        <div class="hobby-gallery-drawer" id="photo-drawer">
+          <div class="gallery-grid">
+            <div class="gallery-card"><div class="gallery-card-placeholder">Street Shot #01</div></div>
+            <div class="gallery-card"><div class="gallery-card-placeholder">Urban Light #02</div></div>
+            <div class="gallery-card"><div class="gallery-card-placeholder">Perspective #03</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 90" preserveAspectRatio="none">
+      <path d="M0,35 C240,75 480,15 720,45 C960,75 1200,25 1440,55 L1440,90 L0,90 Z" fill="#1A1A1E"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-box">
+      <h2>Connect With Me</h2>
+      <p>Have a project in mind, a collaboration proposal, or just want to chat code and design? Reach out across any platform below!</p>
+      
+      <div class="contact-links">
+        <a href="mailto:shimanto616@gmail.com" class="contact-btn">
+          Email
+        </a>
+        <a href="https://www.linkedin.com/in/md-seeman-islam-seemanto-923195226" target="_blank" rel="noopener" class="contact-btn">
+          LinkedIn
+        </a>
+        <a href="https://github.com/shimanto616" target="_blank" rel="noopener" class="contact-btn">
+          GitHub
+        </a>
+        <a href="https://www.facebook.com/shimanto616" target="_blank" rel="noopener" class="contact-btn">
+          Facebook
+        </a>
+        <a href="https://www.instagram.com/stoicc._.shimanto" target="_blank" rel="noopener" class="contact-btn">
+          Instagram
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">© 2026 MD Seeman Islam. Built with <span class="red">code</span> and a little web-slinging.</div>
+</footer>
+
+<script>
+  // Venom Mode Theme Toggle Logic
+  (function(){
+    var venomBtn = document.getElementById('venom-toggle');
+    var coverImg = document.getElementById('spiderman-img');
+    var spiderCoverSrc = "Image/spiderman_cover.png";
+    var venomCoverSrc = "Image/venom_cover.png"; 
+
+    if(venomBtn){
+      venomBtn.addEventListener('click', function(){
+        document.body.classList.toggle('venom-mode');
+        var isVenom = document.body.classList.contains('venom-mode');
+
+        if(coverImg){
+          coverImg.style.opacity = '0';
+          setTimeout(function(){
+            coverImg.src = isVenom ? venomCoverSrc : spiderCoverSrc;
+            coverImg.style.opacity = '1';
+          }, 150);
+        }
+      });
+    }
+  })();
+
+  // Mobile Nav Toggle
+  (function(){
+    var toggleBtn = document.getElementById('nav-toggle-btn');
+    var navLinks = document.getElementById('nav-links');
+    if(toggleBtn && navLinks){
+      toggleBtn.addEventListener('click', function(){
+        navLinks.classList.toggle('open');
+      });
+      navLinks.querySelectorAll('a').forEach(function(link){
+        link.addEventListener('click', function(){
+          navLinks.classList.remove('open');
+        });
+      });
+    }
+  })();
+
+  // Loading Screen Timer
+  (function(){
+    var duration = 2800;
+    var start = performance.now();
+    var fill = document.getElementById('loader-fill');
+    var pct = document.getElementById('loader-pct');
+    var spider = document.getElementById('loader-spider-icon');
+
+    function tick(now){
+      var elapsed = now - start;
+      var p = Math.min(100, Math.round((elapsed/duration)*100));
+      fill.style.width = p + '%';
+      if(spider) spider.style.left = p + '%';
+      pct.textContent = p + '%';
+      if(elapsed < duration){
+        requestAnimationFrame(tick);
+      } else {
+        document.getElementById('loader').classList.add('hide');
+      }
+    }
+    requestAnimationFrame(tick);
+  })();
+
+  // Cursor motion & web-shooting interaction
+  (function(){
+    var isFine = window.matchMedia('(pointer: fine)').matches;
+    if(!isFine) return;
+    var cursor = document.getElementById('cursor-spider');
+    var raf = null, tx = 0, ty = 0, cx = 0, cy = 0;
+    
+    document.addEventListener('mousemove', function(e){
+      tx = e.clientX; ty = e.clientY;
+      if(!raf){
+        raf = requestAnimationFrame(update);
+      }
+    });
+
+    function update(){
+      cx += (tx - cx) * 0.35;
+      cy += (ty - cy) * 0.35;
+      cursor.style.left = cx + 'px';
+      cursor.style.top = cy + 'px';
+      if(Math.abs(tx-cx) > 0.3 || Math.abs(ty-cy) > 0.3){
+        raf = requestAnimationFrame(update);
+      } else { raf = null; }
+    }
+
+    document.querySelectorAll('a, button, .btn, .filter-btn, .expand-bar, .project-card, .pop-card, .tl-card, .tech-card, .explore-btn, .contact-btn, .theme-toggle-btn').forEach(function(el){
+      el.addEventListener('mouseenter', function(){ cursor.classList.add('hovering'); });
+      el.addEventListener('mouseleave', function(){ cursor.classList.remove('hovering'); });
+    });
+
+    document.addEventListener('click', function(e){
+      var count = 6;
+      for(var i=0;i<count;i++){
+        var line = document.createElement('div');
+        line.className = 'web-shot';
+        var len = 40 + Math.random()*30;
+        var angle = (360/count)*i + (Math.random()*20-10);
+        line.style.left = e.clientX + 'px';
+        line.style.top = e.clientY + 'px';
+        line.style.height = len + 'px';
+        line.style.transform = 'rotate(' + angle + 'deg)';
+        document.body.appendChild(line);
+        (function(el){ setTimeout(function(){ el.remove(); }, 600); })(line);
+      }
+    });
+  })();
+
+  // Mouse & Touch Tap-to-Reveal Interaction for Phone & Tablet
+  (function(){
+    var container = document.getElementById('portrait-hex');
+    if(!container) return;
+
+    function updateCoords(clientX, clientY) {
+      var rect = container.getBoundingClientRect();
+      var x = clientX - rect.left;
+      var y = clientY - rect.top;
+      container.style.setProperty('--mouse-x', x + 'px');
+      container.style.setProperty('--mouse-y', y + 'px');
+    }
+
+    // Mouse Tracking for Desktop
+    container.addEventListener('mousemove', function(e){
+      updateCoords(e.clientX, e.clientY);
+    });
+
+    // Touch & Tap Event Handlers for Mobile/Tablet
+    document.addEventListener('touchstart', function(e){
+      if (container.contains(e.target)) {
+        var touch = e.touches[0];
+        updateCoords(touch.clientX, touch.clientY);
+        container.classList.add('mobile-revealed');
+      } else {
+        container.classList.remove('mobile-revealed');
+      }
+    });
+
+    container.addEventListener('touchmove', function(e){
+      if (container.contains(e.target)) {
+        var touch = e.touches[0];
+        updateCoords(touch.clientX, touch.clientY);
+      }
+    });
+  })();
+
+  // Featured Work Filters & Expand Bar Functionality
+  (function(){
+    var filterBtns = document.querySelectorAll('.filter-btn');
+    var projectCards = document.querySelectorAll('.project-card');
+    var expandBtn = document.getElementById('expand-projects-btn');
+    var expandText = document.getElementById('expand-text');
+    var hiddenDrawer = document.getElementById('hidden-projects-drawer');
+
+    filterBtns.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        filterBtns.forEach(function(b){ b.classList.remove('active'); });
+        this.classList.add('active');
+
+        var filter = this.getAttribute('data-filter');
+
+        projectCards.forEach(function(card){
+          var cat = card.getAttribute('data-category');
+          if(filter === 'all' || cat === filter){
+            card.classList.remove('filtered-out');
+          } else {
+            card.classList.add('filtered-out');
+          }
+        });
+      });
+    });
+
+    if(expandBtn && hiddenDrawer){
+      expandBtn.addEventListener('click', function(){
+        var isOpen = hiddenDrawer.classList.contains('open');
+        if(isOpen){
+          hiddenDrawer.classList.remove('open');
+          expandBtn.classList.remove('open');
+          expandText.textContent = 'Show All Projects';
+        } else {
+          hiddenDrawer.classList.add('open');
+          expandBtn.classList.add('open');
+          expandText.textContent = 'Collapse Projects';
+        }
+      });
+    }
+  })();
+
+  // Hobby Gallery Drawer Toggles
+  (function(){
+    function setupGalleryToggle(btnId, drawerId, textId, arrowId, showText, hideText){
+      var btn = document.getElementById(btnId);
+      var drawer = document.getElementById(drawerId);
+      var txt = document.getElementById(textId);
+      var arrow = document.getElementById(arrowId);
+
+      if(btn && drawer){
+        btn.addEventListener('click', function(){
+          var isOpen = drawer.classList.contains('open');
+          if(isOpen){
+            drawer.classList.remove('open');
+            txt.textContent = showText;
+            if(arrow) arrow.style.transform = 'rotate(0deg)';
+          } else {
+            drawer.classList.add('open');
+            txt.textContent = hideText;
+            if(arrow) arrow.style.transform = 'rotate(180deg)';
+          }
+        });
+      }
+    }
+
+    setupGalleryToggle('art-toggle-btn', 'art-drawer', 'art-btn-text', 'art-arrow', 'Explore Artwork', 'Hide Gallery');
+    setupGalleryToggle('photo-toggle-btn', 'photo-drawer', 'photo-btn-text', 'photo-arrow', 'Explore Photos', 'Hide Gallery');
+  })();
+</script>
+
+</body>
+</html>
